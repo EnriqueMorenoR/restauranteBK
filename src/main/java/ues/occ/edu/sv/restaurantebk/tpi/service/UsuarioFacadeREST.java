@@ -25,7 +25,7 @@ import ues.occ.edu.sv.restaurantebk.tpi.entities.Usuario;
  * @author enrique
  */
 @Stateless
-@Path("ues.occ.edu.sv.restaurantebk.tpi.entities.usuario")
+@Path("usuario")
 public class UsuarioFacadeREST extends AbstractFacade<Usuario> {
 
     @PersistenceContext(unitName = "my_persistence_unit")

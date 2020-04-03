@@ -25,7 +25,7 @@ import ues.occ.edu.sv.restaurantebk.tpi.entities.Producto;
  * @author enrique
  */
 @Stateless
-@Path("ues.occ.edu.sv.restaurantebk.tpi.entities.producto")
+@Path("producto")
 public class ProductoFacadeREST extends AbstractFacade<Producto> {
 
     @PersistenceContext(unitName = "my_persistence_unit")

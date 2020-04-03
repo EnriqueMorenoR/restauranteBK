@@ -7,6 +7,7 @@ package ues.occ.edu.sv.restaurantebk.tpi.entities;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -118,7 +119,8 @@ public class Usuario implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-
+    
+    @JsonbTransient
     public List<Orden> getOrdenList() {
         return ordenList;
     }

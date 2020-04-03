@@ -7,6 +7,7 @@ package ues.occ.edu.sv.restaurantebk.tpi.entities;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -104,7 +105,8 @@ public class Producto implements Serializable {
     public void setEsPreparado(Boolean esPreparado) {
         this.esPreparado = esPreparado;
     }
-
+    
+    @JsonbTransient
     public List<DetalleOrden> getDetalleOrdenList() {
         return detalleOrdenList;
     }

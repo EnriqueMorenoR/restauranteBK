@@ -5,6 +5,7 @@
  */
 package ues.occ.edu.sv.restaurantebk.tpi.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,7 +18,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import ues.occ.edu.sv.restaurantebk.tpi.entities.Categoria;
 
 /**
@@ -25,12 +28,15 @@ import ues.occ.edu.sv.restaurantebk.tpi.entities.Categoria;
  * @author enrique
  */
 @Stateless
-@Path("ues.occ.edu.sv.restaurantebk.tpi.entities.categoria")
+@Path("categoria")
 public class CategoriaFacadeREST extends AbstractFacade<Categoria> {
 
     @PersistenceContext(unitName = "my_persistence_unit")
     private EntityManager em;
-
+    
+    public List<Categoria> listaCategoria = new ArrayList<>();
+    public Categoria categoriaObj = new Categoria();
+    
     public CategoriaFacadeREST() {
         super(Categoria.class);
     }
@@ -59,7 +65,7 @@ public class CategoriaFacadeREST extends AbstractFacade<Categoria> {
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Categoria find(@PathParam("id") Integer id) {
-        return super.find(id);
+       return super.find(id);
     }
 
     @GET

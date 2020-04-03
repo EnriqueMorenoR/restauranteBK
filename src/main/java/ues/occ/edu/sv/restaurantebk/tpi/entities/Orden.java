@@ -8,6 +8,7 @@ package ues.occ.edu.sv.restaurantebk.tpi.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -144,7 +145,8 @@ public class Orden implements Serializable {
     public void setObservacion(String observacion) {
         this.observacion = observacion;
     }
-
+    
+    @JsonbTransient
     public List<DetalleOrden> getDetalleOrdenList() {
         return detalleOrdenList;
     }

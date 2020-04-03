@@ -49,7 +49,7 @@
         </dependency>
         <dependency>
             <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
+            <artifactId>javaee-web-api</artifactId>
             <version>${jakartaee}</version>
             <scope>provided</scope>
         </dependency>

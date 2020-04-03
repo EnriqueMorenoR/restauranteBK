@@ -7,6 +7,7 @@ package ues.occ.edu.sv.restaurantebk.tpi.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -71,7 +72,8 @@ public class DetalleOrden implements Serializable {
     public DetalleOrdenPK getDetalleOrdenPK() {
         return detalleOrdenPK;
     }
-
+    
+    @JsonbTransient
     public void setDetalleOrdenPK(DetalleOrdenPK detalleOrdenPK) {
         this.detalleOrdenPK = detalleOrdenPK;
     }
