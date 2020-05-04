@@ -29,6 +29,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(ues.occ.edu.sv.restaurantebk.tpi.cors.crossOrigin.class);
         resources.add(ues.occ.edu.sv.restaurantebk.tpi.service.CategoriaFacadeREST.class);
         resources.add(ues.occ.edu.sv.restaurantebk.tpi.service.DetalleOrdenFacadeREST.class);
         resources.add(ues.occ.edu.sv.restaurantebk.tpi.service.OrdenFacadeREST.class);
