@@ -26,7 +26,7 @@ import javax.validation.constraints.Size;
  * @author enrique
  */
 @Entity
-@Table(name = "usuario", catalog = "restaurante", schema = "")
+@Table(name = "usuario", catalog = "QejGkormCG", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
     @NamedQuery(name = "Usuario.findByIdUsuario", query = "SELECT u FROM Usuario u WHERE u.idUsuario = :idUsuario"),
@@ -143,10 +143,7 @@ public class Usuario implements Serializable {
             return false;
         }
         Usuario other = (Usuario) object;
-        if ((this.idUsuario == null && other.idUsuario != null) || (this.idUsuario != null && !this.idUsuario.equals(other.idUsuario))) {
-            return false;
-        }
-        return true;
+        return !((this.idUsuario == null && other.idUsuario != null) || (this.idUsuario != null && !this.idUsuario.equals(other.idUsuario)));
     }
 
     @Override

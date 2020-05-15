@@ -32,7 +32,7 @@ import javax.validation.constraints.Size;
  * @author enrique
  */
 @Entity
-@Table(name = "orden", catalog = "restaurante", schema = "")
+@Table(name = "orden", catalog = "QejGkormCG", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Orden.findAll", query = "SELECT o FROM Orden o"),
     @NamedQuery(name = "Orden.findByIdOrden", query = "SELECT o FROM Orden o WHERE o.idOrden = :idOrden"),
@@ -177,10 +177,7 @@ public class Orden implements Serializable {
             return false;
         }
         Orden other = (Orden) object;
-        if ((this.idOrden == null && other.idOrden != null) || (this.idOrden != null && !this.idOrden.equals(other.idOrden))) {
-            return false;
-        }
-        return true;
+        return !((this.idOrden == null && other.idOrden != null) || (this.idOrden != null && !this.idOrden.equals(other.idOrden)));
     }
 
     @Override

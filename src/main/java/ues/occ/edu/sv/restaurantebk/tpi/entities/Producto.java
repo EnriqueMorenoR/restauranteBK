@@ -29,7 +29,7 @@ import javax.validation.constraints.Size;
  * @author enrique
  */
 @Entity
-@Table(name = "producto", catalog = "restaurante", schema = "")
+@Table(name = "producto", catalog = "QejGkormCG", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Producto.findAll", query = "SELECT p FROM Producto p"),
     @NamedQuery(name = "Producto.findByIdProducto", query = "SELECT p FROM Producto p WHERE p.idProducto = :idProducto"),
@@ -105,7 +105,7 @@ public class Producto implements Serializable {
     public void setEsPreparado(Boolean esPreparado) {
         this.esPreparado = esPreparado;
     }
-    
+
     @JsonbTransient
     public List<DetalleOrden> getDetalleOrdenList() {
         return detalleOrdenList;
@@ -137,15 +137,12 @@ public class Producto implements Serializable {
             return false;
         }
         Producto other = (Producto) object;
-        if ((this.idProducto == null && other.idProducto != null) || (this.idProducto != null && !this.idProducto.equals(other.idProducto))) {
-            return false;
-        }
-        return true;
+        return !((this.idProducto == null && other.idProducto != null) || (this.idProducto != null && !this.idProducto.equals(other.idProducto)));
     }
 
     @Override
     public String toString() {
         return "ues.occ.edu.sv.calendarbk.tpi.entities.Producto[ idProducto=" + idProducto + " ]";
     }
-    
+
 }

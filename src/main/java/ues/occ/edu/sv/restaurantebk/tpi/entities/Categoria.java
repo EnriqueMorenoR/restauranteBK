@@ -28,7 +28,7 @@ import javax.validation.constraints.Size;
  * @author enrique
  */
 @Entity
-@Table(name = "categoria", catalog = "restaurante", schema = "")
+@Table(name = "categoria", catalog = "QejGkormCG", schema = "")
 //@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Categoria.findAll", query = "SELECT c FROM Categoria c"),
@@ -101,10 +101,7 @@ public class Categoria implements Serializable {
             return false;
         }
         Categoria other = (Categoria) object;
-        if ((this.idCategoria == null && other.idCategoria != null) || (this.idCategoria != null && !this.idCategoria.equals(other.idCategoria))) {
-            return false;
-        }
-        return true;
+        return !((this.idCategoria == null && other.idCategoria != null) || (this.idCategoria != null && !this.idCategoria.equals(other.idCategoria)));
     }
 
     @Override

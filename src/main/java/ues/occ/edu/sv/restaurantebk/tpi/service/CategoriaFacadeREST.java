@@ -8,6 +8,7 @@ package ues.occ.edu.sv.restaurantebk.tpi.service;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
@@ -22,6 +23,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import ues.occ.edu.sv.restaurantebk.tpi.entities.Categoria;
+import ues.occ.edu.sv.restaurantebk.tpi.facades.CategoriaFacade;
 
 /**
  *
@@ -36,6 +38,10 @@ public class CategoriaFacadeREST extends AbstractFacade<Categoria> {
     
     public List<Categoria> listaCategoria = new ArrayList<>();
     public Categoria categoriaObj = new Categoria();
+    
+    
+    @Inject
+    CategoriaFacade categoriaFacade;
     
     public CategoriaFacadeREST() {
         super(Categoria.class);
@@ -72,7 +78,7 @@ public class CategoriaFacadeREST extends AbstractFacade<Categoria> {
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<Categoria> findAll() {
-        return super.findAll();
+        return categoriaFacade.findAll();
     }
 
     @GET

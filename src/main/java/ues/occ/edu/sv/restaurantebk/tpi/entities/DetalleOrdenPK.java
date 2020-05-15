@@ -69,10 +69,7 @@ public class DetalleOrdenPK implements Serializable {
         if (this.idOrden != other.idOrden) {
             return false;
         }
-        if (this.idProducto != other.idProducto) {
-            return false;
-        }
-        return true;
+        return this.idProducto == other.idProducto;
     }
 
     @Override

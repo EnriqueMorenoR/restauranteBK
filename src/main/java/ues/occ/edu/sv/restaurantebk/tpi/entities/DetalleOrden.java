@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
  * @author enrique
  */
 @Entity
-@Table(name = "detalle_orden", catalog = "restaurante", schema = "")
+@Table(name = "detalle_orden", catalog = "QejGkormCG", schema = "")
 @NamedQueries({
     @NamedQuery(name = "DetalleOrden.findAll", query = "SELECT d FROM DetalleOrden d"),
     @NamedQuery(name = "DetalleOrden.findByIdOrden", query = "SELECT d FROM DetalleOrden d WHERE d.detalleOrdenPK.idOrden = :idOrden"),
@@ -124,10 +124,7 @@ public class DetalleOrden implements Serializable {
             return false;
         }
         DetalleOrden other = (DetalleOrden) object;
-        if ((this.detalleOrdenPK == null && other.detalleOrdenPK != null) || (this.detalleOrdenPK != null && !this.detalleOrdenPK.equals(other.detalleOrdenPK))) {
-            return false;
-        }
-        return true;
+        return !((this.detalleOrdenPK == null && other.detalleOrdenPK != null) || (this.detalleOrdenPK != null && !this.detalleOrdenPK.equals(other.detalleOrdenPK)));
     }
 
     @Override
