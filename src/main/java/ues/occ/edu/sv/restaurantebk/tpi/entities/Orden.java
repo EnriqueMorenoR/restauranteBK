@@ -84,10 +84,15 @@ public class Orden implements Serializable {
         this.idOrden = idOrden;
     }
 
-    public Orden(Integer idOrden, Date fecha, double total) {
+    public Orden(Integer idOrden, Date fecha, String mesa, String cliente, String estado, double total, Usuario idUsuario, String observacion) {
         this.idOrden = idOrden;
         this.fecha = fecha;
+        this.mesa = mesa;
+        this.cliente = cliente;
+        this.estado = estado;
         this.total = total;
+        this.idUsuario = idUsuario;
+        this.observacion = observacion;
     }
 
     public Integer getIdOrden() {

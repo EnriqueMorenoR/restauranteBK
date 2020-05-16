@@ -5,6 +5,8 @@
  */
 package ues.occ.edu.sv.restaurantebk.tpi.facades;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -29,6 +31,15 @@ public class ProductoFacade extends AbstractFacade<Producto> implements GenericL
 
     public ProductoFacade() {
         super(Producto.class);
+    }
+    
+    public boolean noNombresIguales(String nombreProducto){
+        try {
+            return getEntityManager().createQuery("SELECT n FROM Producto n WHERE n.nombreProducto=:nombre").setParameter("nombre", nombreProducto).getResultList().isEmpty();
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+            return true;
+        }
     }
     
 }

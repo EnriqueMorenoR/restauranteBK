@@ -5,6 +5,8 @@
  */
 package ues.occ.edu.sv.restaurantebk.tpi.facades;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -29,6 +31,15 @@ public class OrdenFacade extends AbstractFacade<Orden> implements GenericLocalIn
 
     public OrdenFacade() {
         super(Orden.class);
+    }
+    
+    public boolean noIdIguales(Integer idOrden){
+        try {
+            return getEntityManager().createQuery("SELECT n FROM Orden n WHERE n.idOrden=:id").setParameter("id", idOrden).getResultList().isEmpty();
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+            return true;
+        }
     }
     
 }
