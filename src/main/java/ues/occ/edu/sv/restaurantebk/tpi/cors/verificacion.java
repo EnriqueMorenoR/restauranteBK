@@ -12,6 +12,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 /**
@@ -19,6 +20,7 @@ import javax.ejb.Stateless;
  * @author root
  */
 @Stateless
+@LocalBean
 public class verificacion implements Serializable{
     
     protected String bitPassword256 = "ThWmZq3t6w9z$C&F)J@NcRfUjXn2r5u7";
