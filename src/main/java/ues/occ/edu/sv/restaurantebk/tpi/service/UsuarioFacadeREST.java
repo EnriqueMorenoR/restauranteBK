@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ues.occ.edu.sv.restaurantebk.tpi.service;
 
 import com.auth0.jwt.JWT;
@@ -10,15 +5,13 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
-import com.google.gson.JsonSerializer;
 import com.google.gson.JsonSyntaxException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,7 +29,6 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import ues.occ.edu.sv.restaurantebk.tpi.entities.Usuario;
@@ -135,7 +127,7 @@ public class UsuarioFacadeREST implements Serializable {
                     JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
                     if (isNullOrEmpty(json.get("idUsuario").getAsString()) && isNullOrEmpty(json.get("nombre").getAsString()) && isNullOrEmpty(json.get("apellido").getAsString()) && isNullOrEmpty(json.get("categoria").getAsString()) && isNullOrEmpty(json.get("password").getAsString())) {
                         if (usuarioFacade.noNombresIguales(json.get("nombre").getAsString())) {
-                            if (("Administrador").equals(token.getClaim("categoria").asString()) || token.getClaim("nombre").asString().equals(json.get("nombre").getAsString())) {
+                            if (("Administrador").equals(token.getClaim("categoria").asString())) {
                                 if (usuarioFacade.edit(new Usuario((Integer) json.get("idUsuario").getAsInt(), json.get("nombre").getAsString(), json.get("apellido").getAsString(), json.get("categoria").getAsString(), json.get("password").getAsString()))) {
                                     return Response.status(Response.Status.OK).header("mensaje", "Se edito con exito").build();
                                 } else {
@@ -250,6 +242,7 @@ public class UsuarioFacadeREST implements Serializable {
                     .withIssuer("TPI")
                     .withClaim("nombre", nombre)
                     .withClaim("categoria", role)
+                    .withClaim("fecha", new SimpleDateFormat("dd-MM-yyyy").format(new Date()))
                     .sign(Algorithm.HMAC256(bitPassword256));
         } catch (JWTCreationException e) {
             //Invalid Signing configuration / Couldn't convert Claims.
@@ -276,12 +269,47 @@ public class UsuarioFacadeREST implements Serializable {
         }
     }
 
+    /**
+     * Este método sirver para traer todos los usuarios pero sin contraseña,
+     * sólo administradores pueden acceder a él
+     *
+     * @param JWT Es el JSON Web Token del administrador
+     * @return una lista de usuarios sin la contraseña
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Usuario> findAll(@HeaderParam("JWT") String JWT) {
-        return usuarioFacade.findAll();
+    public Response findAll(@HeaderParam("JWT") String JWT) {
+        try {
+            if (JWT != null) {
+                DecodedJWT token = verificarJWT(JWT);
+                if (token != null) {
+                    if (("Administrador").equals(token.getClaim("categoria").asString())) {
+                        List<Object> field1List = usuarioFacade.findAll().stream().map(usuario -> "{\"nombre\":" + usuario.getNombre() + ",\"apellido\":" + usuario.getApellido() + ",\"categoria\":" + usuario.getCategoria() + ",\"idUsuario\":" + usuario.getIdUsuario() + "}").collect(Collectors.toList());
+                        return Response.ok().header("mensaje", "Success").entity(field1List.toString()).type(MediaType.APPLICATION_JSON).build();
+                    } else {
+                        return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "No tiene permisos para ver todos los usuarios").build();
+                    }
+                } else {
+                    return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "JWT no valido").build();
+                }
+            } else {
+                return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "No autorizado, sin JWT").build();
+            }
+        } catch (JsonSyntaxException e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", e).build();
+        }
     }
 
+    /**
+     * Este método es para paginar datos, poder hacer llamadas al sistema sin
+     * que traiga todos los datos
+     *
+     * @param from Desde que id de usuario se quiere
+     * @param to Cuantos usuarios quiere de regreso
+     * @param JWT Es el JSON Web Token
+     * @return Una lista de usuarios en elñ rango seleccionado
+     */
     @GET
     @Path("{from}/{to}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -291,17 +319,8 @@ public class UsuarioFacadeREST implements Serializable {
                 DecodedJWT token = verificarJWT(JWT);
                 if (token != null) {
                     if (("Administrador").equals(token.getClaim("categoria").asString())) {
-//-----------------------------------Falta enviar los usuarios sin el campo de datos---------------------------------
-//                        HashMap objMap;
-//                        List<Object> listaUsuarios = new ArrayList<>();
-//                        usuarioFacade.findRange(from, to).forEach(usuario -> {
-//                            objMap = new HashMap();
-//                            objMap.put("idUsuario", usuario.getIdUsuario());
-//                            objMap.put("nombre", usuario.getNombre());
-//                            objMap.put("apellido", usuario.getApellido());
-//                            objMap.put("categoria", usuario.getCategoria());
-//                        });
-                        return Response.ok().header("mensaje", "Success").build();
+                        List<Object> field1List = usuarioFacade.findRange(from, to).stream().map(usuario -> "{\"nombre\":" + usuario.getNombre() + ",\"apellido\":" + usuario.getApellido() + ",\"categoria\":" + usuario.getCategoria() + ",\"idUsuario\":" + usuario.getIdUsuario() + "}").collect(Collectors.toList());
+                        return Response.ok().header("mensaje", "Success").entity(field1List.toString()).type(MediaType.APPLICATION_JSON).build();
                     } else {
                         return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "No tiene permisos para ver todos los usuarios").build();
                     }
@@ -318,9 +337,9 @@ public class UsuarioFacadeREST implements Serializable {
     }
 
     @GET
-    @Path("count")
+    @Path("cuantosUsuarios")
     @Produces(MediaType.TEXT_PLAIN)
-    public String countREST(@HeaderParam("JWT") String JWT) {
+    public String countREST() {
         return String.valueOf(usuarioFacade.count());
     }
 
