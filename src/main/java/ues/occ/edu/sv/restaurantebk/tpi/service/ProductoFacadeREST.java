@@ -27,6 +27,7 @@ import ues.occ.edu.sv.restaurantebk.tpi.cors.verificacion;
 import ues.occ.edu.sv.restaurantebk.tpi.entities.Producto;
 import ues.occ.edu.sv.restaurantebk.tpi.facades.CategoriaFacade;
 import ues.occ.edu.sv.restaurantebk.tpi.facades.ProductoFacade;
+import ues.occ.edu.sv.restaurantebk.tpi.services.fatherClassVerify;
 
 /**
  *
@@ -34,12 +35,10 @@ import ues.occ.edu.sv.restaurantebk.tpi.facades.ProductoFacade;
  */
 @Stateless
 @Path("producto")
-public class ProductoFacadeREST implements Serializable {
+public class ProductoFacadeREST extends fatherClassVerify implements Serializable {
 
     @Inject
     ProductoFacade productoFacade;
-    @Inject
-    verificacion verificacion;
     @Inject
     CategoriaFacade categoriaFacade;
     
@@ -54,7 +53,7 @@ public class ProductoFacadeREST implements Serializable {
     public List<Producto> findAll(@HeaderParam("JWT") String JWT) {
         try {
             if (JWT != null) {
-                DecodedJWT token = verificacion.verificarJWT(JWT);
+                DecodedJWT token = verificarJWT(JWT);
                 if (token != null) {
                     return productoFacade.findAll();
                 } else {
@@ -80,7 +79,7 @@ public class ProductoFacadeREST implements Serializable {
     public Response crearNuevo(String jsonString, @HeaderParam("JWT") String JWT) {
         try {
             if (JWT != null) {
-                DecodedJWT token = verificacion.verificarJWT(JWT);
+                DecodedJWT token = verificarJWT(JWT);
                 if (token != null) {
                     JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
                     if (isNullOrEmpty(json.get("idCategoria").getAsString())
@@ -123,7 +122,7 @@ public class ProductoFacadeREST implements Serializable {
     public Response edit(String jsonString, @HeaderParam("JWT") String JWT) {
         try {
             if (JWT != null) {
-                DecodedJWT token = verificacion.verificarJWT(JWT);
+                DecodedJWT token = verificarJWT(JWT);
                 if (token != null) {
                     JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
                     if (isNullOrEmpty(json.get("idProducto").getAsString())
@@ -156,13 +155,5 @@ public class ProductoFacadeREST implements Serializable {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "Error dentro del servidor "+e).build();
         }
     }
-    /**
-     * Verifica si un string no esta vacio
-     * 
-     * @param str
-     * @return 
-     */
-    public static boolean isNullOrEmpty(String str) {
-        return ((str != null) ? (!str.trim().isEmpty()) : (false));
-    }
+    
 }

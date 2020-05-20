@@ -12,8 +12,6 @@ import com.google.gson.JsonSyntaxException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -28,11 +26,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import ues.occ.edu.sv.restaurantebk.tpi.cors.verificacion;
 import ues.occ.edu.sv.restaurantebk.tpi.entities.Orden;
 import ues.occ.edu.sv.restaurantebk.tpi.entities.Usuario;
 import ues.occ.edu.sv.restaurantebk.tpi.facades.OrdenFacade;
 import ues.occ.edu.sv.restaurantebk.tpi.facades.UsuarioFacade;
+import ues.occ.edu.sv.restaurantebk.tpi.services.fatherClassVerify;
 
 /**
  *
@@ -40,12 +38,10 @@ import ues.occ.edu.sv.restaurantebk.tpi.facades.UsuarioFacade;
  */
 @Stateless
 @Path("orden")
-public class OrdenFacadeREST implements Serializable {
+public class OrdenFacadeREST extends fatherClassVerify implements Serializable {
 
     @Inject
     OrdenFacade ordenFacade;
-    @Inject
-    verificacion verificacion;
     @Inject
     UsuarioFacade usuarioFacade;
     @Inject
@@ -62,7 +58,7 @@ public class OrdenFacadeREST implements Serializable {
     public List<Orden> findAll(@HeaderParam("JWT") String JWT) {
         try {
             if (JWT != null) {
-                DecodedJWT token = verificacion.verificarJWT(JWT);
+                DecodedJWT token = verificarJWT(JWT);
                 if (token != null) {
                     return ordenFacade.findAll();
                 } else {
@@ -88,7 +84,7 @@ public class OrdenFacadeREST implements Serializable {
     public Response crearNuevo(String jsonString, @HeaderParam("JWT") String JWT) throws ParseException {
         try {
             if (JWT != null) {
-                DecodedJWT token = verificacion.verificarJWT(JWT);
+                DecodedJWT token = verificarJWT(JWT);
                 if (token != null) {
                     JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
                     if (isNullOrEmpty(json.get("fecha").getAsString())
@@ -135,7 +131,7 @@ public class OrdenFacadeREST implements Serializable {
     public Response editar(String jsonString, @HeaderParam("JWT") String JWT) throws ParseException {
         try {
             if (JWT != null) {
-                DecodedJWT token = verificacion.verificarJWT(JWT);
+                DecodedJWT token = verificarJWT(JWT);
                 if (token != null) {
                     JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
                     if (isNullOrEmpty(json.get("fecha").getAsString())
@@ -174,13 +170,5 @@ public class OrdenFacadeREST implements Serializable {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "Error del server " + e).build();
         }
     }
-    /**
-     * Se verifica si un String esta vacio
-     * 
-     * @param str
-     * @return 
-     */
-    public static boolean isNullOrEmpty(String str) {
-        return ((str != null) ? (!str.trim().isEmpty()) : (false));
-    }
+   
 }
