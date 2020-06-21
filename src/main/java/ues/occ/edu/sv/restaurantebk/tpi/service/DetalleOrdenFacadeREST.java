@@ -9,38 +9,26 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import com.sun.source.doctree.SerialDataTree;
 import java.io.Serializable;
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.PathSegment;
 import javax.ws.rs.core.Response;
 import ues.occ.edu.sv.restaurantebk.tpi.cors.verificacion;
 import ues.occ.edu.sv.restaurantebk.tpi.entities.DetalleOrden;
 import ues.occ.edu.sv.restaurantebk.tpi.entities.DetalleOrdenPK;
-import ues.occ.edu.sv.restaurantebk.tpi.entities.Orden;
-import ues.occ.edu.sv.restaurantebk.tpi.entities.Usuario;
 import ues.occ.edu.sv.restaurantebk.tpi.facades.DetalleOrdenFacade;
 import ues.occ.edu.sv.restaurantebk.tpi.facades.OrdenFacade;
 import ues.occ.edu.sv.restaurantebk.tpi.facades.ProductoFacade;
-import static ues.occ.edu.sv.restaurantebk.tpi.service.OrdenFacadeREST.isNullOrEmpty;
 
 /**
  *
