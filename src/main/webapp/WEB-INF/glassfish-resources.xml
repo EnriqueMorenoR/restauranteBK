@@ -5,7 +5,7 @@
         <property name="serverName" value="remotemysql.com"/>
         <property name="portNumber" value="3306"/>
         <property name="databaseName" value="fpGasrmSJt"/>
-        <property name="User" value="QejGkormCG"/>
+        <property name="User" value="fpGasrmSJt"/>
         <property name="Password" value="pvsEfGSDsb"/>
         <property name="URL" value="jdbc:mysql://remotemysql.com:3306/QejGkormCG?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;useSSL=false"/>
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
