@@ -7,7 +7,7 @@
         <property name="databaseName" value="fpGasrmSJt"/>
         <property name="User" value="fpGasrmSJt"/>
         <property name="Password" value="pvsEfGSDsb"/>
-        <property name="URL" value="jdbc:mysql://remotemysql.com:3306/QejGkormCG?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;useSSL=false"/>
+        <property name="URL" value="jdbc:mysql://remotemysql.com:3306/fpGasrmSJt?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC&amp;useSSL=false"/>
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
     </jdbc-connection-pool>
     <jdbc-resource enabled="true" jndi-name="java:app/restaurante" object-type="user" pool-name="mysql_calendario_tpi_projectsPool"/>
