@@ -50,21 +50,21 @@ public class ProductoFacadeREST extends fatherClassVerify implements Serializabl
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Producto> findAll(@HeaderParam("JWT") String JWT) {
-        try {
-            if (JWT != null) {
-                DecodedJWT token = verificarJWT(JWT);
-                if (token != null) {
-                    return productoFacade.findAll();
-                } else {
-                    return Collections.EMPTY_LIST;
-                }
-            } else {
-                return Collections.EMPTY_LIST;
-            }
-        } catch (Exception e) {
-            return Collections.EMPTY_LIST;
-        }
-
+//        try {
+//            if (JWT != null) {
+//                DecodedJWT token = verificarJWT(JWT);
+//                if (token != null) {
+//                    return productoFacade.findAll();
+//                } else {
+//                    return Collections.EMPTY_LIST;
+//                }
+//            } else {
+//                return Collections.EMPTY_LIST;
+//            }
+//        } catch (Exception e) {
+//            return Collections.EMPTY_LIST;
+//        }
+return productoFacade.findAll();
     }
     
     /**
