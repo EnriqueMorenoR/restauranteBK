@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
  * @author enrique
  */
 @Entity
-@Table(name = "detalle_orden", catalog = "fpGasrmSJt", schema = "")
+@Table(name = "detalle_orden", catalog = "calendario", schema = "")
 @NamedQueries({
     @NamedQuery(name = "DetalleOrden.findAll", query = "SELECT d FROM DetalleOrden d"),
     @NamedQuery(name = "DetalleOrden.findByIdOrden", query = "SELECT d FROM DetalleOrden d WHERE d.detalleOrdenPK.idOrden = :idOrden"),

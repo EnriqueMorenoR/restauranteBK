@@ -23,7 +23,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import ues.occ.edu.sv.restaurantebk.tpi.cors.verificacion;
 import ues.occ.edu.sv.restaurantebk.tpi.entities.Producto;
 import ues.occ.edu.sv.restaurantebk.tpi.facades.CategoriaFacade;
 import ues.occ.edu.sv.restaurantebk.tpi.facades.ProductoFacade;
@@ -51,21 +50,21 @@ public class ProductoFacadeREST extends fatherClassVerify implements Serializabl
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Producto> findAll(@HeaderParam("JWT") String JWT) {
-//        try {
-//            if (JWT != null) {
-//                DecodedJWT token = verificarJWT(JWT);
-//                if (token != null) {
-//                    return productoFacade.findAll();
-//                } else {
-//                    return Collections.EMPTY_LIST;
-//                }
-//            } else {
-//                return Collections.EMPTY_LIST;
-//            }
-//        } catch (Exception e) {
-//            return Collections.EMPTY_LIST;
-//        }
-return productoFacade.findAll();
+        try {
+            if (JWT != null) {
+                DecodedJWT token = verificarJWT(JWT);
+                if (token != null) {
+                    return productoFacade.findAll();
+                } else {
+                    return Collections.EMPTY_LIST;
+                }
+            } else {
+                return Collections.EMPTY_LIST;
+            }
+        } catch (Exception e) {
+            return Collections.EMPTY_LIST;
+        }
+
     }
     
     /**
