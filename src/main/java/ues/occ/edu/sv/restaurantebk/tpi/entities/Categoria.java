@@ -28,7 +28,7 @@ import javax.validation.constraints.Size;
  * @author enrique
  */
 @Entity
-@Table(name = "categoria", catalog = "QejGkormCG", schema = "")
+@Table(name = "categoria", catalog = "fpGasrmSJt", schema = "")
 //@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Categoria.findAll", query = "SELECT c FROM Categoria c"),
