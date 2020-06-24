@@ -55,9 +55,15 @@
         </dependency>
         <dependency>
             <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>8.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
-            <version>${jakartaee}</version>
-            <scope>provided</scope>
+            <version>8.0.1</version>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>fish.payara.extras</groupId>
