@@ -80,12 +80,19 @@ public class CategoriaFacadeREST implements Serializable {
             } else {
                 return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "no autorizado sin JWT").build();
             }
-        } catch (Exception e) {
+        } catch (JsonSyntaxException e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "No entro ni siquiera al try" + e).build();
         }
     }
-    
+    /**
+     * Edita las categorias, para editar es necesario que todas las caracteristicas
+     * vengan con datos no se permite que vengan vacias, y es necesario que un administrador las edite
+     * 
+     * @param jsonString
+     * @param JWT
+     * @return 
+     */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response edit(String jsonString, @HeaderParam("JWT") String JWT){
@@ -117,12 +124,18 @@ public class CategoriaFacadeREST implements Serializable {
             }else{
                 return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "No valido sin JWT").build();
             }
-        } catch (Exception e) {
+        } catch (JsonSyntaxException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "Error dentro del servidor "+e).build();
         }
     
     }
     
+    /**
+     * 
+     * @param id
+     * @param JWT
+     * @return 
+     */
     @DELETE
     @Path("{id}")
     public Response remove(@PathParam("id") String id, @HeaderParam("JWT") String JWT){

@@ -42,7 +42,8 @@ public class ProductoFacadeREST extends fatherClassVerify implements Serializabl
     CategoriaFacade categoriaFacade;
     
     /**
-     * Metodo para obtener todos los productos
+     * Lista todos los objetos de producto, pidiendo como autorizacion el JWT
+     * que viene como headers en la peticion http
      * 
      * @param JWT
      * @return 
@@ -50,25 +51,26 @@ public class ProductoFacadeREST extends fatherClassVerify implements Serializabl
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Producto> findAll(@HeaderParam("JWT") String JWT) {
-//        try {
-//            if (JWT != null) {
-//                DecodedJWT token = verificarJWT(JWT);
-//                if (token != null) {
-//                    return productoFacade.findAll();
-//                } else {
-//                    return Collections.EMPTY_LIST;
-//                }
-//            } else {
-//                return Collections.EMPTY_LIST;
-//            }
-//        } catch (Exception e) {
-//            return Collections.EMPTY_LIST;
-//        }
-return productoFacade.findAll();
+        try {
+            if (JWT != null) {
+                DecodedJWT token = verificarJWT(JWT);
+                if (token != null) {
+                    return productoFacade.findAll();
+                } else {
+                    return Collections.EMPTY_LIST;
+                }
+            } else {
+                return Collections.EMPTY_LIST;
+            }
+        } catch (Exception e) {
+            return Collections.EMPTY_LIST;
+        }
+
     }
     
     /**
-     * Con este metodo se podran crear productos 
+     * Se crean los productos con el objeto json referenciado en jsonString y como 
+     * autorizacion para crear objetos el JWT que se accede atraves de los headers
      * 
      * @param jsonString
      * @param JWT
@@ -111,7 +113,9 @@ return productoFacade.findAll();
         }
     }
     /**
-     * Metodo para editar los productos no se pueden repetir nombres
+     * Metodo para editar los productos no se pueden repetir nombres, para la creación
+     * de productos se necesita el JWT y el objeto json que viene desde el front, con las caracteristicas
+     * de un pruducto, es necesario que el objeto cumpla con todas las normativas de no null
      * 
      * @param jsonString
      * @param JWT
