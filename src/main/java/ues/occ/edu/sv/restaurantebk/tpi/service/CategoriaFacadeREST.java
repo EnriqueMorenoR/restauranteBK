@@ -111,7 +111,7 @@ public class CategoriaFacadeREST implements Serializable {
                     JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
                     if(isNullOrEmpty(json.get("nombreCategoria").getAsString()) && isNullOrEmpty(json.get("idCategoria").getAsString())){
                         if(categoriaFacade.noNombresIguales(json.get("nombreCategoria").getAsString())){
-                            if(("Administrador").equals(token.getClaim("categoria").asString())){
+                            if(("admin").equals(token.getClaim("categoria").asString())){
                                 if(categoriaFacade.edit(new Categoria(json.get("idCategoria").getAsInt(), json.get("nombreCategoria").getAsString()))){
                                     return Response.status(Response.Status.OK).header("mensaje", "Se modifico la categoria").build();
                                 }else{
