@@ -166,20 +166,20 @@ public class ProductoFacadeREST extends fatherClassVerify implements Serializabl
     @GET
     @Path("{from}/{to}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Producto> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to, @HeaderParam("JWT") String JWT) {
+    public Response findRange(@PathParam("from") Integer from, @PathParam("to") Integer to, @HeaderParam("JWT") String JWT) {
         try {
             if (JWT != null) {
                 DecodedJWT token = verificarJWT(JWT);
                 if (token != null) {
-                    return productoFacade.findRange(from, to);
+                    return Response.status(Response.Status.OK).header("mensaje", "Hay te van").entity(productoFacade.findRange(from, to)).build();
                 } else {
-                    return Collections.EMPTY_LIST;
+                    return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "token no valido").entity(Collections.EMPTY_LIST).build();
                 }
             } else {
-                return Collections.EMPTY_LIST;
+                return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "No valido sin JWT").entity(Collections.EMPTY_LIST).build();
             }
         } catch (Exception e) {
-            return Collections.EMPTY_LIST;
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "Error dentro del servidor " + e).entity(Collections.EMPTY_LIST).build();
         }
     }
 
