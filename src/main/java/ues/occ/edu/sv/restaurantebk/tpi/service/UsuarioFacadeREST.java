@@ -343,4 +343,24 @@ public class UsuarioFacadeREST implements Serializable {
         return String.valueOf(usuarioFacade.count());
     }
 
+    @GET
+    @Path("checkJWT")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response checkJWT(@HeaderParam("JWT") String JWT) {
+        try {
+            if (JWT != null) {
+                DecodedJWT token = verificarJWT(JWT);
+                if (token != null) {
+                    return Response.status(Response.Status.OK).header("mensaje", "Es un token valido").entity("valido").build();
+                } else {
+                    return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "JWT no valido").build();
+                }
+            } else {
+                return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "No autorizado, sin JWT").build();
+            }
+        } catch (JsonSyntaxException e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, e.getMessage(), e);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", e).build();
+        }
+    }
 }
