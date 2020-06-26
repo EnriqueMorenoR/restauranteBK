@@ -15,6 +15,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -156,6 +157,30 @@ public class ProductoFacadeREST extends fatherClassVerify implements Serializabl
             }
         } catch (JsonSyntaxException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "Error dentro del servidor " + e).build();
+        }
+    }
+    
+    @DELETE
+    @Path("{id}")
+    public Response remove(@PathParam("id") String id, @HeaderParam("JWT") String JWT){
+        try {
+            if(JWT != null){
+                System.out.println("........................................"+id);
+                DecodedJWT token = verificarJWT(JWT);
+                if(token != null){
+                    if(productoFacade.remove(productoFacade.find((Integer) Integer.parseInt(id.trim())))){
+                        return Response.status(Response.Status.OK).header("mensaje", "El producto se borro con exito").build();
+                    }else{
+                        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "no se pudo borrar la categoria").build();
+                    }
+                }else{
+                    return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "token no autorizado").build();
+                }
+            }else{
+                return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "No es posible sin token").build();
+            }
+        } catch (JsonSyntaxException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "Error dentro del servidor "+e).build();
         }
     }
 
