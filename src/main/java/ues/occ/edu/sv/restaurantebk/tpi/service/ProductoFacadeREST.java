@@ -137,17 +137,13 @@ public class ProductoFacadeREST extends fatherClassVerify implements Serializabl
                             && isNullOrEmpty(json.get("nombreProducto").getAsString())
                             && isNullOrEmpty(json.get("precio").getAsString())
                             && isNullOrEmpty(json.get("esPreparado").getAsString())) {
-                        if (productoFacade.noNombresIguales(json.get("nombreProducto").getAsString())) {
-                            if (productoFacade.edit(new Producto(json.get("idProducto").getAsInt(),
-                                    (categoriaFacade.find(json.get("id_categoria").getAsInt())),
-                                    json.get("nombreProducto").getAsString(), json.get("precio").getAsDouble(),
-                                    json.get("esPreparado").getAsBoolean()))) {
-                                return Response.status(Response.Status.OK).header("mensaje", "Se modifico con exito").build();
-                            } else {
-                                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "No se pudo modificar el producto").build();
-                            }
+                        if (productoFacade.edit(new Producto(json.get("idProducto").getAsInt(),
+                                (categoriaFacade.find(json.get("id_categoria").getAsInt())),
+                                json.get("nombreProducto").getAsString(), json.get("precio").getAsDouble(),
+                                json.get("esPreparado").getAsBoolean()))) {
+                            return Response.status(Response.Status.OK).header("mensaje", "Se modifico con exito").build();
                         } else {
-                            return Response.status(Response.Status.CONFLICT).header("mensaje", "Ya existe una categoria con ese nombre").build();
+                            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "No se pudo modificar el producto").build();
                         }
                     } else {
                         return Response.status(Response.Status.BAD_REQUEST).header("mensaje", "los campos vinieron vacios").build();
