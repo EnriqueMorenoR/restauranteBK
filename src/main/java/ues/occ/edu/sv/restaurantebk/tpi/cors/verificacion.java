@@ -25,6 +25,14 @@ public class verificacion implements Serializable{
     
     protected String bitPassword256 = "ThWmZq3t6w9z$C&F)J@NcRfUjXn2r5u7";
     
+    /**
+     * Metodo de verificacion del jwt encriptaco don el algoritmoHMAC256 es necesario
+     * que la semilla o el bitpassword sea igual de esta manera se verifica la integridad
+     * del jwt
+     * @param token
+     * @return 
+     */
+    
     public DecodedJWT verificarJWT(String token) {
         try {
             return JWT.require(Algorithm.HMAC256(bitPassword256))

@@ -18,11 +18,13 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -71,6 +73,31 @@ public class OrdenFacadeREST extends fatherClassVerify implements Serializable {
             return Collections.EMPTY_LIST;
         }
     }
+    
+    @DELETE
+    @Path("{id}")
+    public Response remove(@PathParam("id") String id, @HeaderParam("JWT") String JWT){
+        try {
+            if(JWT != null){
+                System.out.println("........................................"+id);
+                DecodedJWT token = verificarJWT(JWT);
+                if(token != null){
+                    if(ordenFacade.remove(ordenFacade.find((Integer) Integer.parseInt(id.trim())))){
+                        return Response.status(Response.Status.OK).header("mensaje", "la orden se borro con exito").build();
+                    }else{
+                        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "no se pudo borrar la categoria").build();
+                    }
+                }else{
+                    return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "token no autorizado").build();
+                }
+            }else{
+                return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "No es posible sin token").build();
+            }
+        } catch (JsonSyntaxException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "Error dentro del servidor "+e).build();
+        }
+    }
+    
     /**
      * Metodo para crear una orden no es necesario especificar el id
      * 

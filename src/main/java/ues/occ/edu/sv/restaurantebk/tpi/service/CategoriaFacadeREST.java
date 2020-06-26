@@ -32,16 +32,24 @@ import ues.occ.edu.sv.restaurantebk.tpi.entities.Categoria;
 import ues.occ.edu.sv.restaurantebk.tpi.facades.CategoriaFacade;
 
 /**
- *
+ * Categoria rest implementa los metodos rest exponiendo los recursos en objetos json
+ * con la verificacion de JWT java web token para poder responder a la peticion http
+ * los metodos rest son accesables mediante la exposicion de cors para configurar las peticiones
+ * 
  * @author enrique
  */
 @Stateless
 @Path("categoria")
 public class CategoriaFacadeREST implements Serializable {
 
-
+    /*
+    Se injecta el categoriaFacade para hacer uso de sus metodos que conectan con el entitie
+    */
     @Inject
     CategoriaFacade categoriaFacade;
+    /*
+    Se injecta verificacion, contiene un metodo de verificacion del jwt
+    */
     @Inject
     verificacion verificacion;
 
@@ -131,6 +139,8 @@ public class CategoriaFacadeREST implements Serializable {
     }
     
     /**
+     * metodo borrar categoria se pide el id para buscar el objeto en cuestion y la autorizacion
+     * por medio del jwt, para poder otorgar permisos de eliminacion
      * 
      * @param id
      * @param JWT
@@ -160,6 +170,13 @@ public class CategoriaFacadeREST implements Serializable {
         }
     }
 
+    /**
+     * Metodo GET que devuelve una lista de las categorias en formato json, es necesario que el JWT vaya
+     * en la peticion para autorizar la respuesta del metodo
+     * 
+     * @param JWT
+     * @return 
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Categoria> findAll(@HeaderParam("JWT") String JWT) {

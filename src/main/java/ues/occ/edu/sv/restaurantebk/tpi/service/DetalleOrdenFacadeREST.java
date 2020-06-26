@@ -15,11 +15,13 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -37,13 +39,23 @@ import ues.occ.edu.sv.restaurantebk.tpi.facades.ProductoFacade;
 @Stateless
 @Path("detalleorden")
 public class DetalleOrdenFacadeREST implements Serializable{
-    
+    /*Se injecta el facade de detalleOrden para poder hacer uso de los metodos que llaman a la
+    persistencia*/
     @Inject
     DetalleOrdenFacade detalleOrdenFacade;
+    /*
+    Se injecta el Ordenfacade para poder hacer uso de los metodos que llaman a la persistencia
+    */
     @Inject
     OrdenFacade ordenFacade;
+    /*
+    Injectamos el ProductoFacade para poder acceder a los metodos del facade de productos
+    */
     @Inject
     ProductoFacade productoFacade;
+    /*
+    se llama a esta clase porque contiene un metodo de verificacion de jwt
+    */
     @Inject
     verificacion verificacion;
     /**
@@ -150,6 +162,38 @@ public class DetalleOrdenFacadeREST implements Serializable{
             }
         } catch (JsonSyntaxException e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "Error del server " + e).build();
+        }
+    }
+    
+    /**
+     * Metodo para eliminar el detallo orden, se pide el id del detalle orden para buscar el objeto
+     * y eliminarlo, es necesario el header JWT para la autorizacion de eliminacion
+     * 
+     * @param id
+     * @param JWT
+     * @return 
+     */
+    @DELETE
+    @Path("{id}")
+    public Response remove(@PathParam("id") String id, @HeaderParam("JWT") String JWT){
+        try {
+            if(JWT != null){
+                System.out.println("........................................"+id);
+                DecodedJWT token = verificacion.verificarJWT(JWT);
+                if(token != null){
+                    if(detalleOrdenFacade.remove(detalleOrdenFacade.find((Integer) Integer.parseInt(id.trim())))){
+                        return Response.status(Response.Status.OK).header("mensaje", "se borro con exito").build();
+                    }else{
+                        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "no se pudo borrar la categoria").build();
+                    }
+                }else{
+                    return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "token no autorizado").build();
+                }
+            }else{
+                return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "No es posible sin token").build();
+            }
+        } catch (JsonSyntaxException e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "Error dentro del servidor "+e).build();
         }
     }
     /**

@@ -33,6 +33,12 @@ public class OrdenFacade extends AbstractFacade<Orden> implements GenericLocalIn
         super(Orden.class);
     }
     
+    /**
+     * Metodo que busca que no existan dos objetos iguales mediante una query
+     * 
+     * @param idOrden
+     * @return 
+     */
     public boolean noIdIguales(Integer idOrden){
         try {
             return getEntityManager().createQuery("SELECT n FROM Orden n WHERE n.idOrden=:id").setParameter("id", idOrden).getResultList().isEmpty();

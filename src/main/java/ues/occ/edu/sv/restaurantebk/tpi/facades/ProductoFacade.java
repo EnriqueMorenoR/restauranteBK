@@ -33,6 +33,13 @@ public class ProductoFacade extends AbstractFacade<Producto> implements GenericL
         super(Producto.class);
     }
     
+    /**
+     * Metodo que busca la similitud de los nombres de producto devuelve un booleano, true para similitudes y false 
+     * para nombres no iguales
+     * 
+     * @param nombreProducto
+     * @return 
+     */
     public boolean noNombresIguales(String nombreProducto){
         try {
             return getEntityManager().createQuery("SELECT n FROM Producto n WHERE n.nombreProducto=:nombre").setParameter("nombre", nombreProducto).getResultList().isEmpty();

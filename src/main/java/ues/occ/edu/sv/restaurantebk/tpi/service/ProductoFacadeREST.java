@@ -160,6 +160,14 @@ public class ProductoFacadeREST extends fatherClassVerify implements Serializabl
         }
     }
     
+    /**
+     * Se pide el pathparam id para eliminar el producto, siempre con el jwt que es necesario
+     * que vaya en el header
+     * 
+     * @param id
+     * @param JWT
+     * @return 
+     */
     @DELETE
     @Path("{id}")
     public Response remove(@PathParam("id") String id, @HeaderParam("JWT") String JWT){
@@ -183,7 +191,16 @@ public class ProductoFacadeREST extends fatherClassVerify implements Serializabl
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "Error dentro del servidor "+e).build();
         }
     }
-
+    
+    /**
+     * Es necesario espeficicar desde donde hasta donde, con el JWT se da autorizacion a la peticion
+     * get y se devulven en formato json los objetos de esta clase
+     * 
+     * @param from
+     * @param to
+     * @param JWT
+     * @return 
+     */
     @GET
     @Path("{from}/{to}")
     @Produces(MediaType.APPLICATION_JSON)

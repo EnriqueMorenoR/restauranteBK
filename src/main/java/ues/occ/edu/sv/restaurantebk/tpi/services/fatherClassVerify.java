@@ -10,7 +10,14 @@ import java.util.logging.Logger;
 public class fatherClassVerify {
 
     protected String bitPassword256 = "ThWmZq3t6w9z$C&F)J@NcRfUjXn2r5u7";
-
+    
+    /**
+     * Metodo de verificacion del jwt verifica si fueron creados con el mismo bit password
+     * y verifica los datos encriptados en el 
+     * 
+     * @param token
+     * @return 
+     */
     public DecodedJWT verificarJWT(String token) {
         try {
             return JWT.require(Algorithm.HMAC256(bitPassword256))
