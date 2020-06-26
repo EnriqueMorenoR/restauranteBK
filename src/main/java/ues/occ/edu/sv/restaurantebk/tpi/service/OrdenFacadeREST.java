@@ -120,12 +120,8 @@ public class OrdenFacadeREST extends fatherClassVerify implements Serializable {
                             && isNullOrEmpty(json.get("total").getAsString())
                             && isNullOrEmpty(json.get("estado").getAsString())
                             && isNullOrEmpty(json.get("idUsuario").getAsString())) {
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                        Date date = sdf.parse(json.get("fecha").getAsString());
-                        System.out.println("............................................." + json.get("fecha").getAsString());
-                        System.out.println("............................................." + date);
                         Usuario usuario = usuarioFacade.find(json.get("idUsuario").getAsInt());
-                        orden = new Orden(null, date, json.get("mesa").getAsString(), json.get("cliente").getAsString(), json.get("estado").getAsString(), json.get("total").getAsDouble(), usuario, json.get("observacion").getAsString());
+                        orden = new Orden(null, new java.sql.Date(new java.util.Date().getTime()), json.get("mesa").getAsString(), json.get("cliente").getAsString(), json.get("estado").getAsString(), json.get("total").getAsDouble(), usuario, json.get("observacion").getAsString());
                         System.out.println(orden);
                         if (ordenFacade.create(orden)) {
                             return Response.status(Response.Status.CREATED).header("mensaje", "orden creada con exito").build();
