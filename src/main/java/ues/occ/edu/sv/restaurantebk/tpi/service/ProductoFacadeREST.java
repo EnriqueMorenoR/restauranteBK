@@ -20,6 +20,7 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -40,13 +41,13 @@ public class ProductoFacadeREST extends fatherClassVerify implements Serializabl
     ProductoFacade productoFacade;
     @Inject
     CategoriaFacade categoriaFacade;
-    
+
     /**
      * Lista todos los objetos de producto, pidiendo como autorizacion el JWT
      * que viene como headers en la peticion http
-     * 
+     *
      * @param JWT
-     * @return 
+     * @return
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -65,16 +66,16 @@ public class ProductoFacadeREST extends fatherClassVerify implements Serializabl
         } catch (Exception e) {
             return Collections.EMPTY_LIST;
         }
-
     }
-    
+
     /**
-     * Se crean los productos con el objeto json referenciado en jsonString y como 
-     * autorizacion para crear objetos el JWT que se accede atraves de los headers
-     * 
+     * Se crean los productos con el objeto json referenciado en jsonString y
+     * como autorizacion para crear objetos el JWT que se accede atraves de los
+     * headers
+     *
      * @param jsonString
      * @param JWT
-     * @return 
+     * @return
      */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -112,14 +113,16 @@ public class ProductoFacadeREST extends fatherClassVerify implements Serializabl
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "Error del server " + e).build();
         }
     }
+
     /**
-     * Metodo para editar los productos no se pueden repetir nombres, para la creación
-     * de productos se necesita el JWT y el objeto json que viene desde el front, con las caracteristicas
-     * de un pruducto, es necesario que el objeto cumpla con todas las normativas de no null
-     * 
+     * Metodo para editar los productos no se pueden repetir nombres, para la
+     * creación de productos se necesita el JWT y el objeto json que viene desde
+     * el front, con las caracteristicas de un pruducto, es necesario que el
+     * objeto cumpla con todas las normativas de no null
+     *
      * @param jsonString
      * @param JWT
-     * @return 
+     * @return
      */
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
@@ -156,8 +159,28 @@ public class ProductoFacadeREST extends fatherClassVerify implements Serializabl
                 return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "No valido sin JWT").build();
             }
         } catch (JsonSyntaxException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "Error dentro del servidor "+e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "Error dentro del servidor " + e).build();
         }
     }
-    
+
+    @GET
+    @Path("{from}/{to}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Producto> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to, @HeaderParam("JWT") String JWT) {
+        try {
+            if (JWT != null) {
+                DecodedJWT token = verificarJWT(JWT);
+                if (token != null) {
+                    return productoFacade.findRange(from, to);
+                } else {
+                    return Collections.EMPTY_LIST;
+                }
+            } else {
+                return Collections.EMPTY_LIST;
+            }
+        } catch (Exception e) {
+            return Collections.EMPTY_LIST;
+        }
+    }
+
 }
