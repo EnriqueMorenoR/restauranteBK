@@ -77,7 +77,7 @@ public class UsuarioFacadeREST implements Serializable {
             if (JWT != null) {
                 DecodedJWT token = verificarJWT(JWT);
                 if (token != null) {
-                    if (("admin").equals(token.getClaim("categoria").asString())) {
+                    if (("Administrador").equals(token.getClaim("categoria").asString())) {
                         JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
                         if (isNullOrEmpty(json.get("nombre").getAsString()) && isNullOrEmpty(json.get("apellido").getAsString()) && isNullOrEmpty(json.get("categoria").getAsString()) && isNullOrEmpty(json.get("password").getAsString())) {
                             if (usuarioFacade.noNombresIguales(json.get("nombre").getAsString())) {
@@ -127,7 +127,7 @@ public class UsuarioFacadeREST implements Serializable {
                     JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
                     if (isNullOrEmpty(json.get("idUsuario").getAsString()) && isNullOrEmpty(json.get("nombre").getAsString()) && isNullOrEmpty(json.get("apellido").getAsString()) && isNullOrEmpty(json.get("categoria").getAsString()) && isNullOrEmpty(json.get("password").getAsString())) {
                         if (usuarioFacade.noNombresIguales(json.get("nombre").getAsString())) {
-                            if (("admin").equals(token.getClaim("categoria").asString())) {
+                            if (("Administrador").equals(token.getClaim("categoria").asString())) {
                                 if (usuarioFacade.edit(new Usuario((Integer) json.get("idUsuario").getAsInt(), json.get("nombre").getAsString(), json.get("apellido").getAsString(), json.get("categoria").getAsString(), json.get("password").getAsString()))) {
                                     return Response.status(Response.Status.OK).header("mensaje", "Se edito con exito").build();
                                 } else {
@@ -170,7 +170,7 @@ public class UsuarioFacadeREST implements Serializable {
                 DecodedJWT token = verificarJWT(JWT);
                 if (token != null) {
                     if (isNullOrEmpty(id)) {
-                        if (("admin").equals(token.getClaim("categoria").asString())) {
+                        if (("Administrador").equals(token.getClaim("categoria").asString())) {
                             if (usuarioFacade.remove(usuarioFacade.find((Integer) Integer.parseInt(id.trim())))) {
                                 return Response.status(Response.Status.OK).header("mensaje", "Se elimino con exito").build();
                             } else {
@@ -283,7 +283,7 @@ public class UsuarioFacadeREST implements Serializable {
             if (JWT != null) {
                 DecodedJWT token = verificarJWT(JWT);
                 if (token != null) {
-                    if (("admin").equals(token.getClaim("categoria").asString())) {
+                    if (("Administrador").equals(token.getClaim("categoria").asString())) {
                         List<Object> field1List = usuarioFacade.findAll().stream().map(usuario -> "{\"nombre\":" + usuario.getNombre() + ",\"apellido\":" + usuario.getApellido() + ",\"categoria\":" + usuario.getCategoria() + ",\"idUsuario\":" + usuario.getIdUsuario() + "}").collect(Collectors.toList());
                         return Response.ok().header("mensaje", "Success").entity(field1List.toString()).type(MediaType.APPLICATION_JSON).build();
                     } else {
@@ -318,7 +318,7 @@ public class UsuarioFacadeREST implements Serializable {
             if (JWT != null) {
                 DecodedJWT token = verificarJWT(JWT);
                 if (token != null) {
-                    if (("admin").equals(token.getClaim("categoria").asString())) {
+                    if (("Administrador").equals(token.getClaim("categoria").asString())) {
                         List<Object> field1List = usuarioFacade.findRange(from, to).stream().map(usuario -> "{\"nombre\":" + usuario.getNombre() + ",\"apellido\":" + usuario.getApellido() + ",\"categoria\":" + usuario.getCategoria() + ",\"idUsuario\":" + usuario.getIdUsuario() + "}").collect(Collectors.toList());
                         return Response.ok().header("mensaje", "Success").entity(field1List.toString()).type(MediaType.APPLICATION_JSON).build();
                     } else {

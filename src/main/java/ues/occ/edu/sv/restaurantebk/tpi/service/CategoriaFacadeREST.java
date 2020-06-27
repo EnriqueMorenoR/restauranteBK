@@ -111,15 +111,11 @@ public class CategoriaFacadeREST implements Serializable {
                     JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
                     if(isNullOrEmpty(json.get("nombreCategoria").getAsString()) && isNullOrEmpty(json.get("idCategoria").getAsString())){
                         if(categoriaFacade.noNombresIguales(json.get("nombreCategoria").getAsString())){
-                            if(("admin").equals(token.getClaim("categoria").asString())){
                                 if(categoriaFacade.edit(new Categoria(json.get("idCategoria").getAsInt(), json.get("nombreCategoria").getAsString()))){
                                     return Response.status(Response.Status.OK).header("mensaje", "Se modifico la categoria").build();
                                 }else{
                                     return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "No se pudo modificar la categoria").build();
                                 }
-                            }else{
-                                return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "No esta autorizado para modificar").build();
-                            }
                         }else{
                             return Response.status(Response.Status.CONFLICT).header("mensaje", "Ya existe una categoria con ese nombre").build();
                         }
