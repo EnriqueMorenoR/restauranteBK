@@ -124,7 +124,7 @@ public class OrdenFacadeREST extends fatherClassVerify implements Serializable {
                         orden = new Orden(null, new java.sql.Date(new java.util.Date().getTime()), json.get("mesa").getAsString(), json.get("cliente").getAsString(), json.get("estado").getAsString(), json.get("total").getAsDouble(), usuario, json.get("observacion").getAsString());
                         System.out.println(orden);
                         if (ordenFacade.create(orden)) {
-                            return Response.status(Response.Status.CREATED).header("mensaje", "orden creada con exito").entity(orden.getIdOrden()).build();
+                            return Response.status(Response.Status.CREATED).header("mensaje", "orden creada con exito").entity(orden).build();
                         } else {
                             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "no se pudo crear la orden").build();
                         }
