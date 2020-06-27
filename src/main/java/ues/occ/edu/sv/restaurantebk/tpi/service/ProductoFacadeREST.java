@@ -139,7 +139,7 @@ public class ProductoFacadeREST extends fatherClassVerify implements Serializabl
                             && isNullOrEmpty(json.get("precio").getAsString())
                             && isNullOrEmpty(json.get("esPreparado").getAsString())) {
                         if (productoFacade.edit(new Producto(json.get("idProducto").getAsInt(),
-                                (categoriaFacade.find(json.get("id_categoria").getAsInt())),
+                                (categoriaFacade.find(json.get("idCategoria").getAsInt())),
                                 json.get("nombreProducto").getAsString(), json.get("precio").getAsDouble(),
                                 json.get("esPreparado").getAsBoolean()))) {
                             return Response.status(Response.Status.OK).header("mensaje", "Se modifico con exito").build();
@@ -159,47 +159,48 @@ public class ProductoFacadeREST extends fatherClassVerify implements Serializabl
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "Error dentro del servidor " + e).build();
         }
     }
-    
+
     /**
-     * Se pide el pathparam id para eliminar el producto, siempre con el jwt que es necesario
-     * que vaya en el header
-     * 
+     * Se pide el pathparam id para eliminar el producto, siempre con el jwt que
+     * es necesario que vaya en el header
+     *
      * @param id
      * @param JWT
-     * @return 
+     * @return
      */
     @DELETE
     @Path("{id}")
-    public Response remove(@PathParam("id") String id, @HeaderParam("JWT") String JWT){
+    public Response remove(@PathParam("id") String id, @HeaderParam("JWT") String JWT) {
         try {
-            if(JWT != null){
-                System.out.println("........................................"+id);
+            if (JWT != null) {
+                System.out.println("........................................" + id);
                 DecodedJWT token = verificarJWT(JWT);
-                if(token != null){
-                    if(productoFacade.remove(productoFacade.find((Integer) Integer.parseInt(id.trim())))){
+                if (token != null) {
+                    if (productoFacade.remove(productoFacade.find((Integer) Integer.parseInt(id.trim())))) {
                         return Response.status(Response.Status.OK).header("mensaje", "El producto se borro con exito").build();
-                    }else{
+                    } else {
                         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "no se pudo borrar la categoria").build();
                     }
-                }else{
+                } else {
                     return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "token no autorizado").build();
                 }
-            }else{
+            } else {
                 return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "No es posible sin token").build();
             }
         } catch (JsonSyntaxException e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "Error dentro del servidor "+e).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "Error dentro del servidor " + e).build();
         }
     }
-    
+
     /**
-     * Es necesario espeficicar desde donde hasta donde, con el JWT se da autorizacion a la peticion
-     * get y se devulven en formato json los objetos de esta clase
-     * 
+     * Es necesario espeficicar desde donde hasta donde, con el JWT se da
+     * autorizacion a la peticion get y se devulven en formato json los objetos
+     * de esta clase
+     *
      * @param from
      * @param to
      * @param JWT
-     * @return 
+     * @return
      */
     @GET
     @Path("{from}/{to}")
