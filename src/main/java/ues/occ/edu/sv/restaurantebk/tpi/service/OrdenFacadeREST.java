@@ -164,7 +164,7 @@ public class OrdenFacadeREST extends fatherClassVerify implements Serializable {
                             && isNullOrEmpty(json.get("total").getAsString())
                             && isNullOrEmpty(json.get("estado").getAsString())
                             && isNullOrEmpty(json.get("idUsuario").getAsString())) {
-                        if (ordenFacade.noIdIguales(json.get("idOrden").getAsInt())) {
+                        if (!ordenFacade.noIdIguales(json.get("idOrden").getAsInt())) {
 
                             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                             Date date = sdf.parse(json.get("fecha").getAsString());
