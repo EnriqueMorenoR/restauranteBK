@@ -217,7 +217,7 @@ public class UsuarioFacadeREST implements Serializable {
                     return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "No autorizado").build();
                 } else {
                     Usuario a = (Usuario) usuario;
-                    return Response.status(Response.Status.OK).header("JWT", crearJWT(a.getNombre(), a.getCategoria())).build();
+                    return Response.status(Response.Status.OK).header("JWT", crearJWT(a.getNombre(), a.getCategoria())).enitity(a.getIdUsuario()).build();
                 }
             } else {
                 return Response.status(Response.Status.BAD_REQUEST).header("mensaje", "Los campos enviados estan vacios y no se pueden verificar").build();
