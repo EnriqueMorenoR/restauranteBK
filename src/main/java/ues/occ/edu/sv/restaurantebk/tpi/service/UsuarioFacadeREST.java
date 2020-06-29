@@ -125,19 +125,15 @@ public class UsuarioFacadeREST implements Serializable {
                 DecodedJWT token = verificarJWT(JWT);
                 if (token != null) {
                     JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
-                    if (isNullOrEmpty(json.get("idUsuario").getAsString()) && isNullOrEmpty(json.get("nombre").getAsString()) && isNullOrEmpty(json.get("apellido").getAsString()) && isNullOrEmpty(json.get("categoria").getAsString()) && isNullOrEmpty(json.get("password").getAsString())) {
-                        if (usuarioFacade.noNombresIguales(json.get("nombre").getAsString())) {
-                            if (("Administrador").equals(token.getClaim("categoria").asString())) {
-                                if (usuarioFacade.edit(new Usuario((Integer) json.get("idUsuario").getAsInt(), json.get("nombre").getAsString(), json.get("apellido").getAsString(), json.get("categoria").getAsString(), json.get("password").getAsString()))) {
-                                    return Response.status(Response.Status.OK).header("mensaje", "Se edito con exito").build();
-                                } else {
-                                    return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "No se pudo editar").build();
-                                }
+                    if (json.get("idUsuario").getAsInt()>=0 && isNullOrEmpty(json.get("nombre").getAsString()) && isNullOrEmpty(json.get("apellido").getAsString()) && isNullOrEmpty(json.get("categoria").getAsString()) && isNullOrEmpty(json.get("password").getAsString())) {
+                        if (("Administrador").equals(token.getClaim("categoria").asString())) {
+                            if (usuarioFacade.edit(new Usuario((Integer) json.get("idUsuario").getAsInt(), json.get("nombre").getAsString(), json.get("apellido").getAsString(), json.get("categoria").getAsString(), json.get("password").getAsString()))) {
+                                return Response.status(Response.Status.OK).header("mensaje", "Se edito con exito").build();
                             } else {
-                                return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "No tiene permisos para editar el usuario").build();
+                                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).header("mensaje", "No se pudo editar").build();
                             }
                         } else {
-                            return Response.status(Response.Status.CONFLICT).header("mensaje", "Usuario existente, pruebe con otro.").build();
+                            return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "No tiene permisos para editar el usuario").build();
                         }
                     } else {
                         return Response.status(Response.Status.BAD_REQUEST).header("mensaje", "Los campos enviados estan vacios y no se puede editar el objeto").build();
