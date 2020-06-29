@@ -284,7 +284,7 @@ public class UsuarioFacadeREST implements Serializable {
                 DecodedJWT token = verificarJWT(JWT);
                 if (token != null) {
                     if (("Administrador").equals(token.getClaim("categoria").asString())) {
-                        List<Object> field1List = usuarioFacade.findAll().stream().map(usuario -> "{\"nombre\":" + usuario.getNombre() + ",\"apellido\":" + usuario.getApellido() + ",\"categoria\":" + usuario.getCategoria() + ",\"idUsuario\":" + usuario.getIdUsuario() + "}").collect(Collectors.toList());
+                        List<Object> field1List = usuarioFacade.findAll().stream().map(usuario -> "{\"nombre\":\"" + usuario.getNombre() + "\",\"apellido\":\"" + usuario.getApellido() + "\",\"categoria\":\"" + usuario.getCategoria() + "\",\"idUsuario\":" + usuario.getIdUsuario() + "}").collect(Collectors.toList());
                         return Response.ok().header("mensaje", "Success").entity(field1List.toString()).type(MediaType.APPLICATION_JSON).build();
                     } else {
                         return Response.status(Response.Status.UNAUTHORIZED).header("mensaje", "No tiene permisos para ver todos los usuarios").build();
